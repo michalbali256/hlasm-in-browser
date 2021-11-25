@@ -1,8 +1,8 @@
 {
-	"name": "hello",
-	"displayName": "hello",
+	"name": "hlasm-browser-dev",
+	"displayName": "HLASM Browser dev",
 	"description": "",
-	"publisher": "michal",
+	"publisher": "mbali",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -11,16 +11,96 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:hello.helloWorld"
+		"onCommand:hello.helloWorld",
+		"onLanguage:hlasm"
 	],
 	"browser": "./dist/web/extension.js",
 	"contributes": {
+		"languages": [
+			{
+				"id": "hlasm",
+				"extensions": [
+					".hlasm"
+				],
+				"aliases": [
+					"HLASM"
+				],
+				"filenames": [],
+				"firstLine": " *MACRO *"
+			}
+		],
 		"commands": [
 			{
 				"command": "hello.helloWorld",
 				"title": "Hello World"
 			}
-		]
+		],
+		"debuggers": [
+			{
+			  "type": "hlasm",
+			  "label": "HLASM Macro tracer",
+			  "languages": [
+				"hlasm"
+			  ],
+			  "configurationAttributes": {
+				"launch": {
+				  "required": [
+					"program"
+				  ],
+				  "properties": {
+					"program": {
+					  "type": "string",
+					  "description": "Absolute path to a text file.",
+					  "default": "${workspaceFolder}/${command:AskForProgramName}"
+					},
+					"stopOnEntry": {
+					  "type": "boolean",
+					  "description": "Automatically stop after launch.",
+					  "default": true
+					},
+					"trace": {
+					  "type": "boolean",
+					  "description": "Enable logging of the Debug Adapter Protocol.",
+					  "default": true
+					}
+				  }
+				}
+			  },
+			  "initialConfigurations": [
+				{
+				  "type": "hlasm",
+				  "request": "launch",
+				  "name": "Macro tracer: current program",
+				  "program": "${command:extension.hlasm-plugin.getCurrentProgramName}",
+				  "stopOnEntry": true
+				}
+			  ],
+			  "configurationSnippets": [
+				{
+				  "label": "HLASM Macro tracer: Launch current program",
+				  "description": "A new configuration for tracing HLASM file that is currently open.",
+				  "body": {
+					"type": "hlasm",
+					"request": "launch",
+					"name": "Macro tracer: current program",
+					"program": "^\"\\${command:extension.hlasm-plugin.getCurrentProgramName}\"",
+					"stopOnEntry": true
+				  }
+				},
+				{
+				  "label": "HLASM Macro tracer: Ask for file name",
+				  "description": "A new configuration for tracing a user selected HLASM file.",
+				  "body": {
+					"type": "hlasm",
+					"request": "launch",
+					"name": "Macro tracer: Ask for file name",
+					"program": "^\"\\${workspaceFolder}/\\${command:extension.hlasm-plugin.getProgramName}\"",
+					"stopOnEntry": true
+				  }
+				}
+			  ]
+			}
+		  ]
 	},
 	"scripts": {
 		"test": "vscode-test-web --browserType=chrome --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
@@ -33,24 +113,28 @@
 		"run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.62.0",
 		"@types/mocha": "^9.0.0",
-		"eslint": "^8.1.0",
+		"@types/vscode": "^1.62.0",
+		"@types/webpack-env": "^1.16.2",
 		"@typescript-eslint/eslint-plugin": "^5.1.0",
 		"@typescript-eslint/parser": "^5.1.0",
-		"mocha": "^9.1.3",
-		"typescript": "^4.4.4",
 		"@vscode/test-web": "^0.0.15",
-		"ts-loader": "^9.2.5",
-		"webpack": "^5.52.1",
-		"webpack-cli": "^4.8.0",
-		"@types/webpack-env": "^1.16.2",
 		"assert": "^2.0.0",
+		"copy-webpack-plugin": "^10.0.0",
+		"eslint": "^8.1.0",
+		"file-loader": "^6.2.0",
+		"mocha": "^9.1.3",
 		"path-browserify": "^1.0.1",
 		"process": "^0.11.10",
-		"file-loader" : "^6.2.0"
+		"raw-loader": "^4.0.2",
+		"ts-loader": "^9.2.5",
+		"typescript": "^4.4.4",
+		"webpack": "^5.52.1",
+		"webpack-cli": "^4.8.0"
 	},
 	"dependencies": {
-		"vscode-languageclient": "^7.0.0"
+		"vscode-languageclient": "^7.0.0",
+		"vscode-languageserver": "^7.0.0"
 	}
+	
 }

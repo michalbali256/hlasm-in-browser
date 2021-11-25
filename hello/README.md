@@ -1,8 +1,3 @@
-# OMG THIS IS SO GOOD 
+# HLASM Language Server running in browser environment
 
-WOWOWOWOWOOW
-
-## Features
-
- THis is HELLO WORKLS
-**Enjoy!**
+This extension is only for the purposes of development while I am trying to port HLASM Language Support to work with vscode.dev.

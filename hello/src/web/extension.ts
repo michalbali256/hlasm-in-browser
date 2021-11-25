@@ -3,22 +3,8 @@
 import * as vscode from 'vscode';
 import { LanguageClientOptions } from 'vscode-languageclient';
 import * as vscodelc from 'vscode-languageclient/browser';
-
-import lang_server from '../../server/language_server.js';
-import lang_server_module from '../../server/language_server.wasm';
-
-// Since webpack will change the name and potentially the path of the 
-// `.wasm` file, we have to provide a `locateFile()` hook to redirect
-// to the appropriate URL.
-// More details: https://kripken.github.io/emscripten-site/docs/api_reference/module.html
-const module = lang_server({
-  locateFile(path:any) {
-    if(path.endsWith('.wasm')) {
-      return lang_server_module;
-    }
-    return path;
-  }
-});
+import { HLASMDebugAdapterFactory } from './hlasmDebugAdapterFactory';
+import { HLASMConfigurationProvider, getCurrentProgramName, getProgramName } from './debugProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -51,22 +37,33 @@ export function activate(context: vscode.ExtensionContext) {
 	
 	context.subscriptions.push(disposable);
 
+	context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider('hlasm', new HLASMConfigurationProvider()));
+    context.subscriptions.push(vscode.debug.registerDebugAdapterDescriptorFactory('hlasm', new HLASMDebugAdapterFactory(client)));
+	
+	// register filename retrieve functions for debug sessions
+	context.subscriptions.push(vscode.commands.registerCommand('extension.hlasm-plugin.getProgramName', () => getProgramName()));
+	context.subscriptions.push(vscode.commands.registerCommand('extension.hlasm-plugin.getCurrentProgramName', () => getCurrentProgramName()));
+		
 	client.onReady().then(() => {
 		console.log('HLASMPLUGIN server is ready');
 	});
+	
 }
 
 
 function createWorkerLanguageClient(context: vscode.ExtensionContext, clientOptions: LanguageClientOptions) {
 	
+	console.log(self.crossOriginIsolated);
+	
 	//const lang_server_path = require.resolve('../../server/language_server.js')
 	//console.log(lang_server_path);
 	// Create a worker. The worker main file implements the language server.
-	//const serverMain = vscode.Uri.joinPath(context.extensionUri, lang_server_path);
-	//console.log(serverMain);
-	
-	
-	const worker = new Worker(new URL('../../server/language_server.js', import.meta.url)); //@ts-ignore
+	const serverMain = vscode.Uri.joinPath(context.extensionUri, 'dist/web/server.js');
+	console.log(serverMain.toString());
+	const worker = new Worker(serverMain.toString());
+	worker.postMessage(context.extensionUri.toString())
+	//const worker = new Worker('../../server/language_server_loader.js'); //@ts-ignore
+	//const worker = new Worker(new URL('../../server/language_server.js', import.meta.url)); //@ts-ignore
 	
 	// create the language server client to communicate with the server running in the worker
 	return new vscodelc.LanguageClient('lsp-web-extension-sample', 'LSP Web Extension Sample', clientOptions, worker);
