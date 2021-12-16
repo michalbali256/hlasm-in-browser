@@ -4,6 +4,8 @@ This extension is only for the purposes of development while I am trying to port
 
 # How to build WASM language server
 
+First we need to build the language server into WASM using Emscripten. The WASM build like this is already commited in this repository in `src/server`.
+
 I build the language server inside emscripten/emsdk:2.0.34 container. Newer versions might work as well.
 
 The version of language server that works in browser is here: https://github.com/eclipse/che-che4z-lsp-for-hlasm/tree/mb/support-browser. Checkout it.
