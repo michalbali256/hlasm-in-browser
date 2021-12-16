@@ -5,6 +5,8 @@ import {BrowserMessageReader, BrowserMessageWriter } from 'vscode-languageserver
 let extensionUri : any = undefined;
 let resolver: any = undefined;
 
+// Wait for the message from extension.ts with extensionUri.
+
 const messagePromise = new Promise((resolve) => resolver = resolve);
 
 self.onmessage = async ({ data: payload }: { data: any }) => {

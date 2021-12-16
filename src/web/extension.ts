@@ -29,16 +29,16 @@ export function activate(context: vscode.ExtensionContext) {
         documentSelector: [{ language: 'hlasm' }],
     };
 	
-	vscodelc.LanguageClient
-	
     const client = createWorkerLanguageClient(context, clientOptions);
 	
 	const disposable = client.start();
 	
 	context.subscriptions.push(disposable);
-
+	
+	//I experimented with macro tracer a bit, I think that once the debugging fix from pull request #211 is applied, it should work in browser as well.
 	context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider('hlasm', new HLASMConfigurationProvider()));
     context.subscriptions.push(vscode.debug.registerDebugAdapterDescriptorFactory('hlasm', new HLASMDebugAdapterFactory(client)));
+	
 	
 	// register filename retrieve functions for debug sessions
 	context.subscriptions.push(vscode.commands.registerCommand('extension.hlasm-plugin.getProgramName', () => getProgramName()));

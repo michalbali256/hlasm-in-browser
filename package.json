@@ -4,7 +4,9 @@
 	"description": "",
 	"publisher": "mbali",
 	"version": "0.0.2",
-	"repository": {"url": "https://github.com/michalbali256/hlasm-in-browser"},
+	"repository": {
+		"url": "https://github.com/michalbali256/hlasm-in-browser"
+	},
 	"engines": {
 		"vscode": "^1.62.0"
 	},
@@ -38,70 +40,70 @@
 		],
 		"debuggers": [
 			{
-			  "type": "hlasm",
-			  "label": "HLASM Macro tracer",
-			  "languages": [
-				"hlasm"
-			  ],
-			  "configurationAttributes": {
-				"launch": {
-				  "required": [
-					"program"
-				  ],
-				  "properties": {
-					"program": {
-					  "type": "string",
-					  "description": "Absolute path to a text file.",
-					  "default": "${workspaceFolder}/${command:AskForProgramName}"
-					},
-					"stopOnEntry": {
-					  "type": "boolean",
-					  "description": "Automatically stop after launch.",
-					  "default": true
-					},
-					"trace": {
-					  "type": "boolean",
-					  "description": "Enable logging of the Debug Adapter Protocol.",
-					  "default": true
+				"type": "hlasm",
+				"label": "HLASM Macro tracer",
+				"languages": [
+					"hlasm"
+				],
+				"configurationAttributes": {
+					"launch": {
+						"required": [
+							"program"
+						],
+						"properties": {
+							"program": {
+								"type": "string",
+								"description": "Absolute path to a text file.",
+								"default": "${workspaceFolder}/${command:AskForProgramName}"
+							},
+							"stopOnEntry": {
+								"type": "boolean",
+								"description": "Automatically stop after launch.",
+								"default": true
+							},
+							"trace": {
+								"type": "boolean",
+								"description": "Enable logging of the Debug Adapter Protocol.",
+								"default": true
+							}
+						}
 					}
-				  }
-				}
-			  },
-			  "initialConfigurations": [
-				{
-				  "type": "hlasm",
-				  "request": "launch",
-				  "name": "Macro tracer: current program",
-				  "program": "${command:extension.hlasm-plugin.getCurrentProgramName}",
-				  "stopOnEntry": true
-				}
-			  ],
-			  "configurationSnippets": [
-				{
-				  "label": "HLASM Macro tracer: Launch current program",
-				  "description": "A new configuration for tracing HLASM file that is currently open.",
-				  "body": {
-					"type": "hlasm",
-					"request": "launch",
-					"name": "Macro tracer: current program",
-					"program": "^\"\\${command:extension.hlasm-plugin.getCurrentProgramName}\"",
-					"stopOnEntry": true
-				  }
 				},
-				{
-				  "label": "HLASM Macro tracer: Ask for file name",
-				  "description": "A new configuration for tracing a user selected HLASM file.",
-				  "body": {
-					"type": "hlasm",
-					"request": "launch",
-					"name": "Macro tracer: Ask for file name",
-					"program": "^\"\\${workspaceFolder}/\\${command:extension.hlasm-plugin.getProgramName}\"",
-					"stopOnEntry": true
-				  }
-				}
-			  ]
+				"initialConfigurations": [
+					{
+						"type": "hlasm",
+						"request": "launch",
+						"name": "Macro tracer: current program",
+						"program": "${command:extension.hlasm-plugin.getCurrentProgramName}",
+						"stopOnEntry": true
+					}
+				],
+				"configurationSnippets": [
+					{
+						"label": "HLASM Macro tracer: Launch current program",
+						"description": "A new configuration for tracing HLASM file that is currently open.",
+						"body": {
+							"type": "hlasm",
+							"request": "launch",
+							"name": "Macro tracer: current program",
+							"program": "^\"\\${command:extension.hlasm-plugin.getCurrentProgramName}\"",
+							"stopOnEntry": true
+						}
+					},
+					{
+						"label": "HLASM Macro tracer: Ask for file name",
+						"description": "A new configuration for tracing a user selected HLASM file.",
+						"body": {
+							"type": "hlasm",
+							"request": "launch",
+							"name": "Macro tracer: Ask for file name",
+							"program": "^\"\\${workspaceFolder}/\\${command:extension.hlasm-plugin.getProgramName}\"",
+							"stopOnEntry": true
+						}
+					}
+				]
 			}
-		  ]
+		]
 	},
 	"scripts": {
 		"test": "vscode-test-web --browserType=chrome --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
@@ -137,5 +139,4 @@
 		"vscode-languageclient": "^7.0.0",
 		"vscode-languageserver": "^7.0.0"
 	}
-	
 }
