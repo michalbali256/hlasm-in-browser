@@ -2,6 +2,8 @@
 
 This extension is only for the purposes of development while I am trying to port HLASM Language Support to work with vscode.dev.
 
+A published version can be found here: https://marketplace.visualstudio.com/items?itemName=mbali.hlasm-browser-dev. It should work in vscode.dev, if you start your browser with security disabled (see below).
+
 # How to build WASM language server
 
 First we need to build the language server into WASM using Emscripten. The WASM build like this is already commited in this repository in `src/server`.
@@ -53,6 +55,8 @@ Then:
    It starts chrome with web security disabled, allowing the language server to use SharedArrayBuffer. See for example this: https://developer.chrome.com/blog/enabling-shared-array-buffer/. Cross-origin isolation is required in order to use SharedArrayBuffer, but right now, neither vscode.dev nor the testing web server serves the page with the correct headers.
    
    The `--user-data-dir` option causes the browser to be run alongside your other chrome sessions as if it was a fresh install of chrome.
+   
+   See also this issue to track progress of vscode: https://github.com/microsoft/vscode/issues/137884.
 5. Open a new file and change the language to HLASM, the extension should be activated now.
 
 ## Running vscode from sources - workaround
